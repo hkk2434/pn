@@ -37,20 +37,33 @@ const screpFunction = async (url) => {
             // console.log(AllTitle);
 
 
+
+            const durationAndLikes = await page.$$eval(' div.ratio.ratio-16x9.embed-responsive > span.img-info > span', allsrc => allsrc.map(titel => titel.textContent.replace(/\s\s+/g,'')))
+            // console.log(duration);
+
+
+            let duration = durationAndLikes.filter((element, index) => {
+                return index % 2 === 0;
+              })
+              let likes = durationAndLikes.filter((element, index) => {
+                return index % 2 !== 0;
+              })
+
+              console.log(likes);
+
             const realData = [];
 
 
 
             var armixed = imgUrl.map(function (x, i) { 
-                return { imgUrl: x, titel: AllTitle[i] } 
+                return { imgUrl: x, titel: AllTitle[i],duration:duration[i].replace(' ',''),likes:likes[i]} 
                                   });
-            // realData.push(imgUrl, AllLinks)
+           
             console.log(armixed);
 
 
 
-            const duration = await page.$$eval(' div.ratio.ratio-16x9.embed-responsive > span.img-info > span', allsrc => allsrc.map(titel => titel.textContent.replace(/\s\s+/g, '')))
-            // console.log(duration);
+           
 
 
             // browser.close()
